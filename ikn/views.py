@@ -1,4 +1,3 @@
-import datetime
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.response import Response
 from rest_framework import status
@@ -6,8 +5,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
-from django.http import JsonResponse
-from django.views import View
+from django.views.generic import TemplateView
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -66,9 +64,5 @@ def protected_page(request):
     return Response({'detail': 'This is a protected page'}, status=status.HTTP_200_OK)
 
 
-class IndexView(APIView):
-    def get(self, request, *args, **kwargs):
-        return Response(
-            {'message': 'Selamat datang di Nusantara'},
-            status=status.HTTP_200_OK
-        )
+class IndexView(TemplateView):
+    template_name = 'index.html'
