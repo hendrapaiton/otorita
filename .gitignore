@@ -36,3 +36,6 @@ venv.bak/
 # Windows
 Thumbs.db
 ehthumbs.db
+
+# Client React App directories and files
+client
