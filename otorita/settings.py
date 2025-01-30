@@ -1,9 +1,17 @@
 from pathlib import Path
+import environ
+import pymysql
+
+env = environ.Env()
+environ.Env.read_env()
+
+pymysql.install_as_MySQLdb()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'django-insecure-tv68buavxvfbq0$1xn4^q*)&azz$_$=^-@c&(2!6ilbg$+5%9q'
-DEBUG = True
-ALLOWED_HOSTS = []
+
+SECRET_KEY = env('SECRET_KEY', default='django-insecure-tv68buavxvfbq0$1xn4^q*)&azz$_$=^-@c&(2!6ilbg$+5%9q')
+DEBUG = env.bool('DEBUG', default=True)
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
 
 INSTALLED_APPS = [
     'django.contrib.auth',
@@ -28,7 +36,7 @@ ROOT_URLCONF = 'otorita.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -45,8 +53,12 @@ WSGI_APPLICATION = 'otorita.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 
