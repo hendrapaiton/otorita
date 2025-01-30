@@ -64,5 +64,13 @@ def protected_page(request):
     return Response({'detail': 'This is a protected page'}, status=status.HTTP_200_OK)
 
 
+class IndexApi(APIView):
+    def get(self, request, *args, **kwargs):
+        return Response(
+            {'message': 'Selamat datang di Nusantara'},
+            status=status.HTTP_200_OK
+        )
+
+
 class IndexView(TemplateView):
     template_name = 'index.html'
