@@ -11,18 +11,20 @@ from django.views.generic import TemplateView
 class CustomTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
+        print(response.data)
 
         if response.status_code == 200:
             refresh_token = response.data.pop('refresh', None)
             if refresh_token:
+                print('harusnya token')
                 response.set_cookie(
                     key='token',
                     value=refresh_token,
                     httponly=True,
-                    secure=True,
-                    samesite='Lax',
+                    secure=False,
+                    samesite='Strict',
                     max_age=60 * 60 * 24 * 7,
-                    path='/api/token/refresh/'
+                    path='/api/token/'
                 )
 
         return response
