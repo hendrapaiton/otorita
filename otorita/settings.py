@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 import environ
 import pymysql
@@ -9,7 +10,8 @@ pymysql.install_as_MySQLdb()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = env('SECRET_KEY', default='django-insecure-tv68buavxvfbq0$1xn4^q*)&azz$_$=^-@c&(2!6ilbg$+5%9q')
+SECRET_KEY = env(
+    'SECRET_KEY', default='django-insecure-tv68buavxvfbq0$1xn4^q*)&azz$_$=^-@c&(2!6ilbg$+5%9q')
 DEBUG = env.bool('DEBUG', default=True)
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
 
@@ -84,3 +86,24 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+
+    'REFRESH_TOKEN_COOKIE': {
+        'name': 'token',
+        'httponly': True,
+        'secure': True,
+        'samesite': 'Lax',
+        'path': '/api/token/refresh/',
+    }
+}
